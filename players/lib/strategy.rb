@@ -10,14 +10,10 @@ module Jamie
 
     def unknown_points(state)
       points = []
-      y = 0
-      state.each do |row|
-        x  = 0
-        row.each do |point|
+      state.each_with_index do |row,y|
+        row.each_with_index do |point,x|
           points.push [x,y] if point == :unknown
-          x = x+1
         end
-        y = y+1
       end
       points
     end
