@@ -1,7 +1,7 @@
 module Jamie
   class Strategy
     def get_next_shot(state, ships_remaining)
-      [9,9]
+      unknown_points(state).first
     end
 
     def impossible_points(state, ships_remaining)
