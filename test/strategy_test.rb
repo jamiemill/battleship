@@ -81,5 +81,38 @@ class StrategyTest < MiniTest::Unit::TestCase
     #assert_equal expected, result
   end
 
+  def test_check_point
+    strategy = Jamie::Strategy.new
+    state = Jamie::StrategyHelper.str_to_state(<<-END
+      ..m.......
+      m.........
+      ...h......
+      ..........
+      ..........
+      ..........
+      ..........
+      ..........
+      ..........
+      ..........
+    END
+    )
+    result = strategy.check_point(state, 0, 0)
+    expected = :unknown
+    assert_equal expected, result
+
+    result = strategy.check_point(state, 0, 1)
+    expected = :miss
+    assert_equal expected, result
+
+    result = strategy.check_point(state, 2, 0)
+    expected = :miss
+    assert_equal expected, result
+
+    result = strategy.check_point(state, 3, 2)
+    expected = :hit
+    assert_equal expected, result
+
+  end
+
 end
 

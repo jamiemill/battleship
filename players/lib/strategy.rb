@@ -18,5 +18,9 @@ module Jamie
       points
     end
 
+    def check_point(state, x, y)
+      state[y][x]
+    end
+
   end
 end
