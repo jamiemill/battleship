@@ -44,5 +44,39 @@ module Jamie
       false
     end
 
+    def adjacent_to_ship?(point)
+      [:up,:down].each do |dir|
+        if part_of_horizontal_ship? Nav.send(dir,point)
+          return true
+        end
+      end
+      [:left,:right].each do |dir|
+        if part_of_vertical_ship? Nav.send(dir,point)
+          return true
+        end
+      end
+      false
+    end
+
+    def part_of_vertical_ship?(point)
+      return false if check_point(point) != :hit
+      [:up,:down].each do |dir|
+        if check_point(Nav.send(dir,point)) == :hit
+          return true
+        end
+      end
+      false
+    end
+
+    def part_of_horizontal_ship?(point)
+      return false if check_point(point) != :hit
+      [:left,:right].each do |dir|
+        if check_point(Nav.send(dir,point)) == :hit
+          return true
+        end
+      end
+      false
+    end
+
   end
 end
