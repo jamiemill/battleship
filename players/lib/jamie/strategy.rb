@@ -15,9 +15,9 @@ module Jamie
       points_to_try = [
         super_likely_points,
         likely_points,
-        Jamie::SeekStrategies::CircularSweep.points,
-        Jamie::SeekStrategies::DiagonalTLtoBR.points,
-        Jamie::SeekStrategies::DiagonalTRtoBL.points,
+        SeekStrategies::CircularSweep.points,
+        SeekStrategies::DiagonalTLtoBR.points,
+        SeekStrategies::DiagonalTRtoBL.points,
         unknown_points
       ].inject(:+).uniq
       points_to_try = points_to_try - known_points
