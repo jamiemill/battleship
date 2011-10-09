@@ -93,6 +93,7 @@ class StrategyTest < MiniTest::Unit::TestCase
   def test_up
     strategy = Jamie::Strategy.new
     assert_equal [2,1], strategy.up([2,2])
+    assert_equal [2,0], strategy.up([2,2],2)
   end
 
   def test_down
@@ -108,6 +109,11 @@ class StrategyTest < MiniTest::Unit::TestCase
   def test_right
     strategy = Jamie::Strategy.new
     assert_equal [3,2], strategy.right([2,2])
+  end
+
+  def test_right_out_of_range
+    strategy = Jamie::Strategy.new
+    assert_equal nil, strategy.right([9,9])
   end
 
   def test_crop

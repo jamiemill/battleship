@@ -94,20 +94,20 @@ module Jamie
       points.reject {|p| p.nil?}
     end
 
-    def up(point)
-      crop [point[0],point[1]-1]
+    def up(point,dist=1)
+      crop [point[0],point[1]-dist]
     end
 
-    def down(point)
-      crop [point[0],point[1]+1]
+    def down(point,dist=1)
+      crop [point[0],point[1]+dist]
     end
 
-    def left(point)
-      crop [point[0]-1,point[1]]
+    def left(point,dist=1)
+      crop [point[0]-dist,point[1]]
     end
 
-    def right(point)
-      crop [point[0]+1,point[1]]
+    def right(point,dist=1)
+      crop [point[0]+dist,point[1]]
     end
 
     def crop(point)
