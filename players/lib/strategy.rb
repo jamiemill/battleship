@@ -13,6 +13,10 @@ module Jamie
       points_by_type(:unknown,state)
     end
 
+    def known_points(state)
+      hit_points(state) + miss_points(state)
+    end
+
     def hit_points(state)
       points_by_type(:hit,state)
     end
@@ -43,7 +47,7 @@ module Jamie
       hit_points(state).each do |point|
         points = points + around(point)
       end
-      points.uniq - hit_points(state) - miss_points(state)
+      points.uniq - known_points(state)
     end
 
     def around(point)
