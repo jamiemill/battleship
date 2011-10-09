@@ -72,19 +72,19 @@ class StrategyTest < MiniTest::Unit::TestCase
       ..........
     END
     )
-    result = strategy.check_point(state, 0, 0)
+    result = strategy.check_point(state, [0, 0])
     expected = :unknown
     assert_equal expected, result
 
-    result = strategy.check_point(state, 0, 1)
+    result = strategy.check_point(state, [0, 1])
     expected = :miss
     assert_equal expected, result
 
-    result = strategy.check_point(state, 2, 0)
+    result = strategy.check_point(state, [2, 0])
     expected = :miss
     assert_equal expected, result
 
-    result = strategy.check_point(state, 3, 2)
+    result = strategy.check_point(state, [3, 2])
     expected = :hit
     assert_equal expected, result
 

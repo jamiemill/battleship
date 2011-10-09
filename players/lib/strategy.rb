@@ -70,8 +70,8 @@ module Jamie
       points
     end
 
-    def check_point(state, x, y)
-      state[y][x]
+    def check_point(state, point)
+      state[point[1]][point[0]]
     end
 
     # Finds :unknown points immediately above, left, right, and below
