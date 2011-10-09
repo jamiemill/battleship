@@ -10,14 +10,16 @@ module Jamie
       @ships_remaining = ships_remaining
 
       #TODO: calculate impossible points and subtract from this lot
-      [
+      points_to_try = [
         super_likely_points,
         likely_points,
         circular_seek_points,
         diagonal_seek_top_top_right_to_bottom_left,
         diagonal_seek_top_left_to_bottom_right_points,
         unknown_points
-      ].inject(:+).uniq.first
+      ].inject(:+).uniq
+      points_to_try = points_to_try - known_points
+      points_to_try.first
     end
 
     def circular_seek_points

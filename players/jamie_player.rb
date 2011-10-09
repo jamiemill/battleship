@@ -1,5 +1,5 @@
-require 'positioner'
-require 'strategy'
+require 'jamie/positioner'
+require 'jamie/strategy'
 
 class JamiePlayer
   def initialize

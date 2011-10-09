@@ -1,5 +1,5 @@
 require "minitest/autorun"
-require "./players/lib/strategy"
+require "./players/lib/jamie/strategy"
 require "./test/strategy_helper"
 
 class StrategyTest < MiniTest::Unit::TestCase
