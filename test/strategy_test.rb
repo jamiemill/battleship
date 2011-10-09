@@ -120,5 +120,14 @@ class StrategyTest < MiniTest::Unit::TestCase
     assert_equal [9,9], strategy.crop([9,9])
   end
 
+  def test_around
+    strategy = Jamie::Strategy.new
+    assert_equal [
+      [5,4],
+      [6,5],
+      [5,6],
+      [4,5]
+    ], strategy.around([5,5])
+  end
 end
 

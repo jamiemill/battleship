@@ -21,6 +21,14 @@ module Jamie
       state[y][x]
     end
 
+    def around(point)
+      points = []
+      points.push up(point)
+      points.push right(point)
+      points.push down(point)
+      points.push left(point)
+      points.reject {|p| p.nil?}
+    end
 
     def up(point)
       [point[0],point[1]-1]
