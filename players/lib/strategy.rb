@@ -33,6 +33,17 @@ module Jamie
       state[y][x]
     end
 
+    # Finds :unknown points immediately above, left, right, and below
+    # :hit points
+
+    def likely_points(state)
+      points = []
+      hit_points(state).each do |point|
+        points = points + around(point)
+      end
+      points.uniq
+    end
+
     def around(point)
       points = []
       points.push up(point)
