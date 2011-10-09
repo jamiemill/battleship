@@ -4,10 +4,30 @@ module Jamie
     BOARD_SIZE = 10
 
     def get_next_shot(state, ships_remaining)
-      (
-        likely_points(state) + unknown_points(state)
-      ).uniq.first
+      [
+        likely_points(state),
+        diagonal_seek_top_top_right_to_bottom_left(state),
+        diagonal_seek_top_left_to_bottom_right_points(state),
+        unknown_points(state)
+      ].inject(:+).uniq.first
     end
+
+    def diagonal_seek_top_left_to_bottom_right_points(state)
+      points = []
+      (0..9).each do |i|
+        points.push [i,i]
+      end
+      points - known_points(state)
+    end
+
+    def diagonal_seek_top_top_right_to_bottom_left(state)
+      points = []
+      (0..9).each do |i|
+        points.push [9-i,i]
+      end
+      points - known_points(state)
+    end
+
 
     def unknown_points(state)
       points_by_type(:unknown,state)
