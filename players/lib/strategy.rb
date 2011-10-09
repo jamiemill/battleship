@@ -4,7 +4,9 @@ module Jamie
     BOARD_SIZE = 10
 
     def get_next_shot(state, ships_remaining)
+      #TODO: calculate impossible points and subtract from this lot
       [
+        super_likely_points(state),
         likely_points(state),
         circular_seek_points(state),
         diagonal_seek_top_top_right_to_bottom_left(state),
@@ -71,6 +73,7 @@ module Jamie
     end
 
     def check_point(state, point)
+      return nil if point.nil?
       state[point[1]][point[0]]
     end
 
@@ -81,6 +84,22 @@ module Jamie
       points = []
       hit_points(state).each do |point|
         points = points + around(point)
+      end
+      points.uniq - known_points(state)
+    end
+
+    def in_line_with_hit_neighbours(point,state)
+      [:up,:right,:down,:left].each do |dir|
+        if check_point(state, self.send(dir,point)) == :hit && check_point(state,self.send(dir,point,2)) == :hit
+          return true
+        end
+      end
+      false
+    end
+
+    def super_likely_points(state)
+      points = likely_points(state).reject do |point|
+        !in_line_with_hit_neighbours(point,state)
       end
       points.uniq - known_points(state)
     end
