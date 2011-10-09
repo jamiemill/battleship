@@ -41,7 +41,7 @@ module Jamie
       hit_points(state).each do |point|
         points = points + around(point)
       end
-      points.uniq
+      points.uniq - hit_points(state) - miss_points(state)
     end
 
     def around(point)
@@ -54,19 +54,19 @@ module Jamie
     end
 
     def up(point)
-      [point[0],point[1]-1]
+      crop [point[0],point[1]-1]
     end
 
     def down(point)
-      [point[0],point[1]+1]
+      crop [point[0],point[1]+1]
     end
 
     def left(point)
-      [point[0]-1,point[1]]
+      crop [point[0]-1,point[1]]
     end
 
     def right(point)
-      [point[0]+1,point[1]]
+      crop [point[0]+1,point[1]]
     end
 
     def crop(point)

@@ -130,6 +130,14 @@ class StrategyTest < MiniTest::Unit::TestCase
     ], strategy.around([5,5])
   end
 
+  def test_around_is_cropped
+    strategy = Jamie::Strategy.new
+    assert_equal [
+      [9,8],
+      [8,9]
+    ], strategy.around([9,9])
+  end
+
   def test_likely_points
     strategy = Jamie::Strategy.new
     state = Jamie::StrategyHelper.str_to_state(<<-END
@@ -153,8 +161,56 @@ class StrategyTest < MiniTest::Unit::TestCase
       [2,2]
     ]
     assert_equal expected, result
-
   end
+
+  def test_likely_points_is_cropped
+    strategy = Jamie::Strategy.new
+    state = Jamie::StrategyHelper.str_to_state(<<-END
+      ...h......
+      ..........
+      ..........
+      ..........
+      ..........
+      ..........
+      ..........
+      ..........
+      ..........
+      ..........
+    END
+    )
+    result = strategy.likely_points(state)
+    expected = [
+      [4,0],
+      [3,1],
+      [2,0]
+    ]
+    assert_equal expected, result
+  end
+
+  def test_likely_points_excludes_missed_and_hit
+    strategy = Jamie::Strategy.new
+    state = Jamie::StrategyHelper.str_to_state(<<-END
+      ..hh......
+      ..mm......
+      ..........
+      ..........
+      ..........
+      ..........
+      ..........
+      ..........
+      ..........
+      ..........
+    END
+    )
+    result = strategy.likely_points(state)
+    expected = [
+      [1,0],
+      [4,0]
+    ]
+    assert_equal expected, result
+  end
+
+
 
 end
 
