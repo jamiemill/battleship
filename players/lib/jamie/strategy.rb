@@ -16,7 +16,7 @@ module Jamie
       #TODO: calculate impossible points and subtract from this lot
       points_to_try = [
         super_likely_points,
-        likely_points,
+        (likely_points - not_so_likely_points),
         SeekStrategies::CircularSweep.points,
         SeekStrategies::DiagonalTLtoBR.points,
         SeekStrategies::DiagonalTRtoBL.points,
@@ -51,6 +51,13 @@ module Jamie
         !in_line_with_hit_neighbours?(point)
       end
       points.uniq - known_points
+    end
+
+    # find points alongside lines
+    def not_so_likely_points
+      unknown_points.reject do |point|
+        !adjacent_to_ship?(point)
+      end.uniq
     end
 
 
