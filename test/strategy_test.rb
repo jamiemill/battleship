@@ -2,7 +2,10 @@ $:.unshift File.expand_path("../../players/lib", __FILE__)
 
 require "minitest/autorun"
 require "jamie/strategy"
+require "jamie/nav"
 require "strategy_helper"
+
+module Jamie
 
 class StrategyTest < MiniTest::Unit::TestCase
 
@@ -93,57 +96,49 @@ class StrategyTest < MiniTest::Unit::TestCase
   end
 
   def test_up
-    strategy = Jamie::Strategy.new
-    assert_equal [2,1], strategy.up([2,2])
-    assert_equal [2,0], strategy.up([2,2],2)
+    assert_equal [2,1], Nav.up([2,2])
+    assert_equal [2,0], Nav.up([2,2],2)
   end
 
   def test_down
-    strategy = Jamie::Strategy.new
-    assert_equal [2,3], strategy.down([2,2])
+    assert_equal [2,3], Nav.down([2,2])
   end
 
   def test_left
-    strategy = Jamie::Strategy.new
-    assert_equal [1,2], strategy.left([2,2])
+    assert_equal [1,2], Nav.left([2,2])
   end
 
   def test_right
-    strategy = Jamie::Strategy.new
-    assert_equal [3,2], strategy.right([2,2])
+    assert_equal [3,2], Nav.right([2,2])
   end
 
   def test_right_out_of_range
-    strategy = Jamie::Strategy.new
-    assert_equal nil, strategy.right([9,9])
+    assert_equal nil, Nav.right([9,9])
   end
 
   def test_crop
-    strategy = Jamie::Strategy.new
-    assert_nil strategy.crop([-1,0])
-    assert_nil strategy.crop([10,0])
-    assert_nil strategy.crop([5,10])
-    assert_nil strategy.crop([5,100])
-    assert_equal [0,0], strategy.crop([0,0])
-    assert_equal [9,9], strategy.crop([9,9])
+    assert_nil Nav.crop([-1,0])
+    assert_nil Nav.crop([10,0])
+    assert_nil Nav.crop([5,10])
+    assert_nil Nav.crop([5,100])
+    assert_equal [0,0], Nav.crop([0,0])
+    assert_equal [9,9], Nav.crop([9,9])
   end
 
   def test_around
-    strategy = Jamie::Strategy.new
     assert_equal [
       [5,4],
       [6,5],
       [5,6],
       [4,5]
-    ], strategy.around([5,5])
+    ], Nav.around([5,5])
   end
 
   def test_around_is_cropped
-    strategy = Jamie::Strategy.new
     assert_equal [
       [9,8],
       [8,9]
-    ], strategy.around([9,9])
+    ], Nav.around([9,9])
   end
 
   def test_likely_points
@@ -264,7 +259,6 @@ class StrategyTest < MiniTest::Unit::TestCase
     assert_equal expected, result
   end
 
-
-
 end
 
+end

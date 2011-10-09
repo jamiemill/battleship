@@ -1,9 +1,9 @@
 require 'jamie/seek_strategies'
+require 'jamie/nav'
 
 module Jamie
   class Strategy
 
-    BOARD_SIZE = 10
 
     attr_writer :state
 
@@ -61,14 +61,14 @@ module Jamie
     def likely_points
       points = []
       hit_points.each do |point|
-        points = points + around(point)
+        points = points + Nav.around(point)
       end
       points.uniq - known_points
     end
 
     def in_line_with_hit_neighbours(point)
       [:up,:right,:down,:left].each do |dir|
-        if check_point(self.send(dir,point)) == :hit && check_point(self.send(dir,point,2)) == :hit
+        if check_point(Nav.send(dir,point)) == :hit && check_point(Nav.send(dir,point,2)) == :hit
           return true
         end
       end
@@ -82,39 +82,6 @@ module Jamie
       points.uniq - known_points
     end
 
-    def around(point)
-      points = []
-      points << up(point)
-      points << right(point)
-      points << down(point)
-      points << left(point)
-      points.reject {|p| p.nil?}
-    end
-
-    def up(point,dist=1)
-      crop [point[0],point[1]-dist]
-    end
-
-    def down(point,dist=1)
-      crop [point[0],point[1]+dist]
-    end
-
-    def left(point,dist=1)
-      crop [point[0]-dist,point[1]]
-    end
-
-    def right(point,dist=1)
-      crop [point[0]+dist,point[1]]
-    end
-
-    def crop(point)
-      range = 0...BOARD_SIZE
-      if range.include? point[0] and range.include? point[1]
-        point
-      else
-        nil
-      end
-    end
 
   end
 end
