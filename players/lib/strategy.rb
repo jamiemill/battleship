@@ -6,10 +6,25 @@ module Jamie
     def get_next_shot(state, ships_remaining)
       [
         likely_points(state),
+        circular_seek_points(state),
         diagonal_seek_top_top_right_to_bottom_left(state),
         diagonal_seek_top_left_to_bottom_right_points(state),
         unknown_points(state)
       ].inject(:+).uniq.first
+    end
+
+    def circular_seek_points(state)
+      points = [
+        # across, one space from top
+        [1,1],[3,1],[5,1],[7,1],
+        # down, one space from right
+        [8,2],[8,4],[8,6],[8,8],
+        # across left, one space from bottom
+        [6,8],[4,8],[2,8],
+        # up, one space from left
+        [1,7],[1,5],[1,3],
+      ]
+      points - known_points(state)
     end
 
     def diagonal_seek_top_left_to_bottom_right_points(state)
