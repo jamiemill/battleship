@@ -39,7 +39,7 @@ class StrategyTest < MiniTest::Unit::TestCase
   def test_unknown_points
     strategy = Jamie::Strategy.new
 
-    state = Jamie::StrategyHelper.str_to_state(<<-END
+    strategy.state = Jamie::StrategyHelper.str_to_state(<<-END
       .mhmhmhmhm
       m.mmmmmhhh
       hmmmmhhhmm
@@ -52,14 +52,14 @@ class StrategyTest < MiniTest::Unit::TestCase
       hh.hhhhhhh
     END
     )
-    result = strategy.unknown_points state
+    result = strategy.unknown_points
     expected = [[0,0],[1,1],[2,9]]
     assert_equal expected, result
   end
 
   def test_check_point
     strategy = Jamie::Strategy.new
-    state = Jamie::StrategyHelper.str_to_state(<<-END
+    strategy.state = Jamie::StrategyHelper.str_to_state(<<-END
       ..m.......
       m.........
       ...h......
@@ -72,19 +72,19 @@ class StrategyTest < MiniTest::Unit::TestCase
       ..........
     END
     )
-    result = strategy.check_point(state, [0, 0])
+    result = strategy.check_point([0, 0])
     expected = :unknown
     assert_equal expected, result
 
-    result = strategy.check_point(state, [0, 1])
+    result = strategy.check_point([0, 1])
     expected = :miss
     assert_equal expected, result
 
-    result = strategy.check_point(state, [2, 0])
+    result = strategy.check_point([2, 0])
     expected = :miss
     assert_equal expected, result
 
-    result = strategy.check_point(state, [3, 2])
+    result = strategy.check_point([3, 2])
     expected = :hit
     assert_equal expected, result
 
@@ -146,7 +146,7 @@ class StrategyTest < MiniTest::Unit::TestCase
 
   def test_likely_points
     strategy = Jamie::Strategy.new
-    state = Jamie::StrategyHelper.str_to_state(<<-END
+    strategy.state = Jamie::StrategyHelper.str_to_state(<<-END
       ..........
       ..........
       ...h......
@@ -159,7 +159,7 @@ class StrategyTest < MiniTest::Unit::TestCase
       ..........
     END
     )
-    result = strategy.likely_points(state)
+    result = strategy.likely_points
     expected = [
       [3,1],
       [4,2],
@@ -171,7 +171,7 @@ class StrategyTest < MiniTest::Unit::TestCase
 
   def test_likely_points_is_cropped
     strategy = Jamie::Strategy.new
-    state = Jamie::StrategyHelper.str_to_state(<<-END
+    strategy.state = Jamie::StrategyHelper.str_to_state(<<-END
       ...h......
       ..........
       ..........
@@ -184,7 +184,7 @@ class StrategyTest < MiniTest::Unit::TestCase
       ..........
     END
     )
-    result = strategy.likely_points(state)
+    result = strategy.likely_points
     expected = [
       [4,0],
       [3,1],
@@ -195,7 +195,7 @@ class StrategyTest < MiniTest::Unit::TestCase
 
   def test_likely_points_excludes_missed_and_hit
     strategy = Jamie::Strategy.new
-    state = Jamie::StrategyHelper.str_to_state(<<-END
+    strategy.state = Jamie::StrategyHelper.str_to_state(<<-END
       ..hh......
       ..mm......
       ..........
@@ -208,7 +208,7 @@ class StrategyTest < MiniTest::Unit::TestCase
       ..........
     END
     )
-    result = strategy.likely_points(state)
+    result = strategy.likely_points
     expected = [
       [1,0],
       [4,0]
@@ -218,7 +218,7 @@ class StrategyTest < MiniTest::Unit::TestCase
 
   def test_in_line_with_hit_neighbours
     strategy = Jamie::Strategy.new
-    state = Jamie::StrategyHelper.str_to_state(<<-END
+    strategy.state = Jamie::StrategyHelper.str_to_state(<<-END
       ..........
       .......hhh
       ...h......
@@ -231,16 +231,16 @@ class StrategyTest < MiniTest::Unit::TestCase
       ..........
     END
     )
-    assert strategy.in_line_with_hit_neighbours([3,1],state)
-    assert strategy.in_line_with_hit_neighbours([3,4],state)
-    assert strategy.in_line_with_hit_neighbours([6,1],state)
+    assert strategy.in_line_with_hit_neighbours([3,1])
+    assert strategy.in_line_with_hit_neighbours([3,4])
+    assert strategy.in_line_with_hit_neighbours([6,1])
 
-    refute strategy.in_line_with_hit_neighbours([9,9],state)
+    refute strategy.in_line_with_hit_neighbours([9,9])
   end
 
   def test_super_likely_points
     strategy = Jamie::Strategy.new
-    state = Jamie::StrategyHelper.str_to_state(<<-END
+    strategy.state = Jamie::StrategyHelper.str_to_state(<<-END
       ..........
       .......hhh
       ...h......
@@ -253,7 +253,7 @@ class StrategyTest < MiniTest::Unit::TestCase
       ..........
     END
     )
-    result = strategy.super_likely_points(state)
+    result = strategy.super_likely_points
     expected = [
       [6,1],
       [3,1],

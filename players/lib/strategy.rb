@@ -3,19 +3,24 @@ module Jamie
 
     BOARD_SIZE = 10
 
+    attr_writer :state
+
     def get_next_shot(state, ships_remaining)
+      @state = state
+      @ships_remaining = ships_remaining
+
       #TODO: calculate impossible points and subtract from this lot
       [
-        super_likely_points(state),
-        likely_points(state),
-        circular_seek_points(state),
-        diagonal_seek_top_top_right_to_bottom_left(state),
-        diagonal_seek_top_left_to_bottom_right_points(state),
-        unknown_points(state)
+        super_likely_points,
+        likely_points,
+        circular_seek_points,
+        diagonal_seek_top_top_right_to_bottom_left,
+        diagonal_seek_top_left_to_bottom_right_points,
+        unknown_points
       ].inject(:+).uniq.first
     end
 
-    def circular_seek_points(state)
+    def circular_seek_points
       points = [
         # across, one space from top
         [1,1],[3,1],[5,1],[7,1],
@@ -26,45 +31,45 @@ module Jamie
         # up, one space from left
         [1,7],[1,5],[1,3],
       ]
-      points - known_points(state)
+      points - known_points
     end
 
-    def diagonal_seek_top_left_to_bottom_right_points(state)
+    def diagonal_seek_top_left_to_bottom_right_points
       points = []
       (0..9).each do |i|
         points.push [i,i]
       end
-      points - known_points(state)
+      points - known_points
     end
 
-    def diagonal_seek_top_top_right_to_bottom_left(state)
+    def diagonal_seek_top_top_right_to_bottom_left
       points = []
       (0..9).each do |i|
         points.push [9-i,i]
       end
-      points - known_points(state)
+      points - known_points
     end
 
 
-    def unknown_points(state)
-      points_by_type(:unknown,state)
+    def unknown_points
+      points_by_type(:unknown)
     end
 
-    def known_points(state)
-      hit_points(state) + miss_points(state)
+    def known_points
+      hit_points + miss_points
     end
 
-    def hit_points(state)
-      points_by_type(:hit,state)
+    def hit_points
+      points_by_type(:hit)
     end
 
-    def miss_points(state)
-      points_by_type(:miss,state)
+    def miss_points
+      points_by_type(:miss)
     end
 
-    def points_by_type(type,state)
+    def points_by_type(type)
       points = []
-      state.each_with_index do |row,y|
+      @state.each_with_index do |row,y|
         row.each_with_index do |point,x|
           points.push [x,y] if point == type
         end
@@ -72,36 +77,36 @@ module Jamie
       points
     end
 
-    def check_point(state, point)
+    def check_point(point)
       return nil if point.nil?
-      state[point[1]][point[0]]
+      @state[point[1]][point[0]]
     end
 
     # Finds :unknown points immediately above, left, right, and below
     # :hit points
 
-    def likely_points(state)
+    def likely_points
       points = []
-      hit_points(state).each do |point|
+      hit_points.each do |point|
         points = points + around(point)
       end
-      points.uniq - known_points(state)
+      points.uniq - known_points
     end
 
-    def in_line_with_hit_neighbours(point,state)
+    def in_line_with_hit_neighbours(point)
       [:up,:right,:down,:left].each do |dir|
-        if check_point(state, self.send(dir,point)) == :hit && check_point(state,self.send(dir,point,2)) == :hit
+        if check_point(self.send(dir,point)) == :hit && check_point(self.send(dir,point,2)) == :hit
           return true
         end
       end
       false
     end
 
-    def super_likely_points(state)
-      points = likely_points(state).reject do |point|
-        !in_line_with_hit_neighbours(point,state)
+    def super_likely_points
+      points = likely_points.reject do |point|
+        !in_line_with_hit_neighbours(point)
       end
-      points.uniq - known_points(state)
+      points.uniq - known_points
     end
 
     def around(point)
