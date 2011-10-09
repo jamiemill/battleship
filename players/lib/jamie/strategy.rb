@@ -44,7 +44,7 @@ module Jamie
       points = []
       @state.each_with_index do |row,y|
         row.each_with_index do |point,x|
-          points.push [x,y] if point == type
+          points << [x,y] if point == type
         end
       end
       points
@@ -84,10 +84,10 @@ module Jamie
 
     def around(point)
       points = []
-      points.push up(point)
-      points.push right(point)
-      points.push down(point)
-      points.push left(point)
+      points << up(point)
+      points << right(point)
+      points << down(point)
+      points << left(point)
       points.reject {|p| p.nil?}
     end
 
