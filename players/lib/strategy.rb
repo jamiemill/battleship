@@ -8,10 +8,22 @@ module Jamie
     end
 
     def unknown_points(state)
+      points_by_type(:unknown,state)
+    end
+
+    def hit_points(state)
+      points_by_type(:hit,state)
+    end
+
+    def miss_points(state)
+      points_by_type(:miss,state)
+    end
+
+    def points_by_type(type,state)
       points = []
       state.each_with_index do |row,y|
         row.each_with_index do |point,x|
-          points.push [x,y] if point == :unknown
+          points.push [x,y] if point == type
         end
       end
       points
