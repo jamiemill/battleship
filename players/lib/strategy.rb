@@ -4,7 +4,9 @@ module Jamie
     BOARD_SIZE = 10
 
     def get_next_shot(state, ships_remaining)
-      unknown_points(state).first
+      (
+        likely_points(state) + unknown_points(state)
+      ).uniq.first
     end
 
     def unknown_points(state)
