@@ -1,6 +1,8 @@
+$:.unshift File.expand_path("../../players/lib", __FILE__)
+
 require "minitest/autorun"
-require "./players/lib/jamie/strategy"
-require "./test/strategy_helper"
+require "jamie/strategy"
+require "strategy_helper"
 
 class StrategyTest < MiniTest::Unit::TestCase
 

@@ -1,3 +1,5 @@
+require 'jamie/seek_strategies'
+
 module Jamie
   class Strategy
 
@@ -13,45 +15,14 @@ module Jamie
       points_to_try = [
         super_likely_points,
         likely_points,
-        circular_seek_points,
-        diagonal_seek_top_top_right_to_bottom_left,
-        diagonal_seek_top_left_to_bottom_right_points,
+        Jamie::SeekStrategies::CircularSweep.points,
+        Jamie::SeekStrategies::DiagonalTLtoBR.points,
+        Jamie::SeekStrategies::DiagonalTRtoBL.points,
         unknown_points
       ].inject(:+).uniq
       points_to_try = points_to_try - known_points
       points_to_try.first
     end
-
-    def circular_seek_points
-      points = [
-        # across, one space from top
-        [1,1],[3,1],[5,1],[7,1],
-        # down, one space from right
-        [8,2],[8,4],[8,6],[8,8],
-        # across left, one space from bottom
-        [6,8],[4,8],[2,8],
-        # up, one space from left
-        [1,7],[1,5],[1,3],
-      ]
-      points - known_points
-    end
-
-    def diagonal_seek_top_left_to_bottom_right_points
-      points = []
-      (0..9).each do |i|
-        points.push [i,i]
-      end
-      points - known_points
-    end
-
-    def diagonal_seek_top_top_right_to_bottom_left
-      points = []
-      (0..9).each do |i|
-        points.push [9-i,i]
-      end
-      points - known_points
-    end
-
 
     def unknown_points
       points_by_type(:unknown)
