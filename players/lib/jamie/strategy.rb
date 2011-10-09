@@ -1,9 +1,11 @@
 require 'jamie/seek_strategies'
 require 'jamie/nav'
+require 'jamie/state_inspections'
 
 module Jamie
   class Strategy
 
+    include Jamie::StateInspections
 
     attr_writer :state
 
@@ -22,37 +24,6 @@ module Jamie
       ].inject(:+).uniq
       points_to_try = points_to_try - known_points
       points_to_try.first
-    end
-
-    def unknown_points
-      points_by_type(:unknown)
-    end
-
-    def known_points
-      hit_points + miss_points
-    end
-
-    def hit_points
-      points_by_type(:hit)
-    end
-
-    def miss_points
-      points_by_type(:miss)
-    end
-
-    def points_by_type(type)
-      points = []
-      @state.each_with_index do |row,y|
-        row.each_with_index do |point,x|
-          points << [x,y] if point == type
-        end
-      end
-      points
-    end
-
-    def check_point(point)
-      return nil if point.nil?
-      @state[point[1]][point[0]]
     end
 
     # Finds :unknown points immediately above, left, right, and below
