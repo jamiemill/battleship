@@ -90,5 +90,35 @@ class StrategyTest < MiniTest::Unit::TestCase
 
   end
 
+  def test_up
+    strategy = Jamie::Strategy.new
+    assert_equal [2,1], strategy.up([2,2])
+  end
+
+  def test_down
+    strategy = Jamie::Strategy.new
+    assert_equal [2,3], strategy.down([2,2])
+  end
+
+  def test_left
+    strategy = Jamie::Strategy.new
+    assert_equal [1,2], strategy.left([2,2])
+  end
+
+  def test_right
+    strategy = Jamie::Strategy.new
+    assert_equal [3,2], strategy.right([2,2])
+  end
+
+  def test_crop
+    strategy = Jamie::Strategy.new
+    assert_nil strategy.crop([-1,0])
+    assert_nil strategy.crop([10,0])
+    assert_nil strategy.crop([5,10])
+    assert_nil strategy.crop([5,100])
+    assert_equal [0,0], strategy.crop([0,0])
+    assert_equal [9,9], strategy.crop([9,9])
+  end
+
 end
 
