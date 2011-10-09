@@ -48,7 +48,7 @@ module Jamie
 
     def super_likely_points
       points = likely_points.reject do |point|
-        !in_line_with_hit_neighbours(point)
+        !in_line_with_hit_neighbours?(point)
       end
       points.uniq - known_points
     end

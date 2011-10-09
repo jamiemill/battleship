@@ -35,7 +35,7 @@ module Jamie
       @state[point[1]][point[0]]
     end
 
-    def in_line_with_hit_neighbours(point)
+    def in_line_with_hit_neighbours?(point)
       [:up,:right,:down,:left].each do |dir|
         if check_point(Nav.send(dir,point)) == :hit && check_point(Nav.send(dir,point,2)) == :hit
           return true
