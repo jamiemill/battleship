@@ -8,6 +8,7 @@ module Jamie
     include Jamie::StateInspections
 
     attr_writer :state
+    attr_writer :ships_remaining
 
     def get_next_shot(state, ships_remaining)
       @state = state
@@ -22,7 +23,7 @@ module Jamie
         SeekStrategies::DiagonalTRtoBL.points,
         unknown_points
       ].inject(:+).uniq
-      points_to_try = points_to_try - known_points
+      points_to_try = (points_to_try - known_points) - impossible_points
       points_to_try.first
     end
 
@@ -58,6 +59,12 @@ module Jamie
       unknown_points.reject do |point|
         !adjacent_to_ship?(point)
       end.uniq
+    end
+
+    def impossible_points
+      unknown_points.reject do |point|
+        !(part_of_max_unknown_line(point) < @ships_remaining.min)
+      end
     end
 
     def part_of_max_unknown_line(point)

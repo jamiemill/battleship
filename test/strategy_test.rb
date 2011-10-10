@@ -340,6 +340,32 @@ class StrategyTest < MiniTest::Unit::TestCase
 
   end
 
+  def test_impossible_points
+    strategy = Jamie::Strategy.new
+    strategy.state = Jamie::StrategyHelper.str_to_state(<<-END
+      .m........
+      mm........
+      ..........
+      ..m.......
+      .m.m......
+      .m.m......
+      ..m.......
+      ..........
+      ..........
+      ..........
+    END
+    )
+    strategy.ships_remaining =  [5, 4, 3, 3]
+    result = strategy.impossible_points
+    expected = [
+      [0,0],
+      [1,3],
+      [2,4],
+      [2,5],
+    ].sort
+    assert_equal expected, result
+  end
+
   def test_part_of_max_unknown_line
     strategy = Jamie::Strategy.new
     strategy.state = Jamie::StrategyHelper.str_to_state(<<-END
@@ -356,6 +382,7 @@ class StrategyTest < MiniTest::Unit::TestCase
     END
     )
     assert_equal 1, strategy.part_of_max_unknown_line([0,0])
+    assert_equal 2, strategy.part_of_max_unknown_line([1,3])
     assert_equal 2, strategy.part_of_max_unknown_line([2,4])
     assert_equal 2, strategy.part_of_max_unknown_line([2,5])
   end
