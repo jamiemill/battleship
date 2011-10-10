@@ -60,6 +60,39 @@ module Jamie
       end.uniq
     end
 
+    def part_of_max_unknown_line(point)
+      maxvert = 1;
+      [:up,:down].each do |dir|
+        i=1
+        loop do
+          other_point = Nav.send(dir,point,i)
+          if check_point(other_point) == :unknown
+            maxvert = maxvert + 1
+            i = i+1
+          else
+            break
+          end
+        end
+      end
+
+      maxhoriz = 1;
+      [:right,:left].each do |dir|
+        i=1
+        loop do
+          other_point = Nav.send(dir,point,i)
+          if check_point(other_point) == :unknown
+            maxhoriz = maxhoriz + 1
+            i = i+1
+          else
+            break
+          end
+        end
+      end
+
+      [maxvert,maxhoriz].max
+
+    end
+
 
   end
 end
