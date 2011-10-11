@@ -14,13 +14,13 @@ module Jamie
       @state = state
       @ships_remaining = ships_remaining
 
-      #TODO: calculate impossible points and subtract from this lot
       points_to_try = [
         super_likely_points,
         (likely_points - not_so_likely_points),
         SeekStrategies::CircularSweep.points,
         SeekStrategies::DiagonalTLtoBR.points,
         SeekStrategies::DiagonalTRtoBL.points,
+        SeekStrategies::CheckerBoard.points,
         unknown_points
       ].inject(:+).uniq
       points_to_try = (points_to_try - known_points) - impossible_points
